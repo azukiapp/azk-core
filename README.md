@@ -1,2 +1,19 @@
 # azk-projects-boilerplate
-gulp, babel
+
+#### Compile and watch
+
+```
+$ npm start
+```
+
+#### Test
+
+```
+$ npm test
+```
+
+#### Test and watch
+
+```
+$ gulp test
+```

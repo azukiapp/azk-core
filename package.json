@@ -1,0 +1,45 @@
+{
+  "name": "azk-projects-boilerplate",
+  "version": "0.0.1",
+  "description": "Azk Projects Boilerplate",
+  "main": "index.js",
+  "scripts": {
+    "test": "gulp mocha",
+    "start": "gulp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/azukiapp/azk-projects-boilerplate.git"
+  },
+  "keywords": [
+    "azk"
+  ],
+  "license": "Apache License",
+  "bugs": {
+    "url": "https://github.com/azukiapp/azk-projects-boilerplate/issues"
+  },
+  "homepage": "https://github.com/azukiapp/azk-projects-boilerplate",
+  "dependencies": {
+    "lodash": "^3.5.0",
+    "q": "^1.2.0",
+    "q-io": "^1.12.0",
+    "source-map-support": "^0.2.9",
+    "winston": "^0.9.0"
+  },
+  "devDependencies": {
+    "chai": "^2.1.1",
+    "chai-as-promised": "^4.3.0",
+    "chai-things": "^0.2.0",
+    "gulp": "^3.8.11",
+    "gulp-babel": "^4.0.0",
+    "gulp-mocha": "^2.0.0",
+    "gulp-sourcemaps": "^1.5.0",
+    "gulp-util": "^3.0.4",
+    "rimraf": "^2.3.2",
+    "yargs": "^3.5.3"
+  },
+  "engineStrict": true,
+  "engines": {
+    "node": ">= 0.10"
+  }
+}
