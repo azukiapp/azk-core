@@ -1,5 +1,3 @@
-require("babel/register");
-require('source-map-support').install();
 var chai  = require('chai');
 
 // Chai extensions

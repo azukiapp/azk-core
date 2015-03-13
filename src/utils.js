@@ -91,6 +91,23 @@ var Utils = {
     });
   },
 
+  update(target) {
+    var sources = [].slice.call(arguments, 1);
+    sources.forEach(function (source) {
+      Object.getOwnPropertyNames(source).forEach(function(propName) {
+        Object.defineProperty(target, propName,
+          Object.getOwnPropertyDescriptor(source, propName));
+      });
+    });
+    return target;
+  },
+
+  clone(obj) {
+    var copy = Object.create(Object.getPrototypeOf(obj));
+    this.update(copy, obj);
+    return copy;
+  },
+
   qify(klass) {
     if (_.isString(klass)) {
       klass = require(klass);
@@ -100,9 +117,12 @@ var Utils = {
       klass.call(this, ...args);
     };
 
+    console.log('\n>>---------\n klass:', klass, '\n>>---------\n');
+    console.log('\n>>---------\n klass.__proto__:', klass.__proto__, '\n>>---------\n');
+    console.log('\n>>---------\n klass.prototype:', klass.prototype, '\n>>---------\n');
     newClass.prototype = Object.create(klass.prototype);
 
-    _.each(_.methods(klass.prototype), (method) => {
+    _.each(_.functions(klass), (method) => {
       var original = klass.prototype[method];
       newClass.prototype[method] = function(...args) {
         return Q.nbind(original, this)(...args);

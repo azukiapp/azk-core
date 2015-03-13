@@ -62,13 +62,18 @@ describe("Azk utils module", function() {
       })).not.exist;
     });
 
+    it("should clone a class", function() {
+      var Cloned = utils.clone(FooBar);
+      var cloned = new Cloned('cloned name');
+      var result = cloned.getAsyncName();
+
+      h.expect(result).to.eql('cloned name');
+    });
+
     it("should qify a class methods", function() {
       var OtherBar = utils.qify(FooBar);
       var b = new OtherBar('bname');
       var c = new OtherBar('cname');
-
-      console.log('\n>>---------\n b:', b, '\n>>---------\n');
-      console.log('\n>>---------\n b.prototype:', b.prototype, '\n>>---------\n');
 
       return Q.all([
         b.getAsyncName(), c.getAsyncName()
@@ -76,6 +81,7 @@ describe("Azk utils module", function() {
         h.expect(results).to.eql(['bname', 'cname']);
       });
     });
+
   });
 
   describe("in a module with async functions", function() {

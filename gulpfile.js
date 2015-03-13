@@ -5,6 +5,8 @@ var mocha      = require('gulp-mocha');
 var rimraf     = require('rimraf');
 var sourcemaps = require('gulp-sourcemaps');
 var yargs      = require('yargs');
+require('babel/polyfill');
+require('source-map-support').install();
 
 /*
    babel
