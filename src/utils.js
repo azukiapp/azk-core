@@ -91,23 +91,6 @@ var Utils = {
     });
   },
 
-  update(target) {
-    var sources = [].slice.call(arguments, 1);
-    sources.forEach(function (source) {
-      Object.getOwnPropertyNames(source).forEach(function(propName) {
-        Object.defineProperty(target, propName,
-          Object.getOwnPropertyDescriptor(source, propName));
-      });
-    });
-    return target;
-  },
-
-  clone(obj) {
-    var copy = Object.create(Object.getPrototypeOf(obj));
-    this.update(copy, obj);
-    return copy;
-  },
-
   qify(klass) {
     if (_.isString(klass)) {
       klass = require(klass);
@@ -119,7 +102,7 @@ var Utils = {
 
     newClass.prototype = Object.create(klass.prototype);
 
-    _.each(_.functions(klass), (method) => {
+    _.each(_.methods(klass.prototype), (method) => {
       var original = klass.prototype[method];
       newClass.prototype[method] = function(...args) {
         return Q.nbind(original, this)(...args);

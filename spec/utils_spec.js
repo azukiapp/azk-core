@@ -62,16 +62,41 @@ describe("Azk utils module", function() {
       })).not.exist;
     });
 
-    it("should clone a class", function() {
-      var Cloned = utils.clone(FooBar);
-      var cloned = new Cloned('cloned name');
-      var result = cloned.getAsyncName();
-
-      h.expect(result).to.eql('cloned name');
-    });
-
     it("should qify a class methods", function() {
+
+      // /* -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.      DEBUG */
+      // var target = FooBar;
+      // var depth  = 2; var inspectResult = require("util").inspect(target,
+      //   { showHidden:!0, colors:!0, depth:depth });
+      // console.log("\n",
+      //   ">>------------------------------------------------------\n",
+      //   "  ##  FooBar\n",
+      //   "  ------------------------------------------------------\n",
+      //   "  source: ( " + __filename + " )" + "\n",
+      //   "  ------------------------------------------------------\n",
+      //   "" + inspectResult + "\n",
+      //   "<<------------------------------------------------------\n",
+      //   "");
+      // /* -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-. /END-DEBUG */
+
       var OtherBar = utils.qify(FooBar);
+      //OtherBar = utils.clone(FooBar);
+
+      // /* -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.      DEBUG */
+      // target = OtherBar;
+      // depth  = 2; inspectResult = require("util").inspect(target,
+      //   { showHidden:!0, colors:!0, depth:depth });
+      // console.log("\n",
+      //   ">>------------------------------------------------------\n",
+      //   "  ##  OtherBar\n",
+      //   "  ------------------------------------------------------\n",
+      //   "  source: ( " + __filename + " )" + "\n",
+      //   "  ------------------------------------------------------\n",
+      //   "" + inspectResult + "\n",
+      //   "<<------------------------------------------------------\n",
+      //   "");
+      // /* -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-. /END-DEBUG */
+
       var b = new OtherBar('bname');
       var c = new OtherBar('cname');
 

@@ -70,7 +70,8 @@ gulp.task('mocha', ['babel', 'jshint', 'jscs'], function() {
 gulp.task('jshint', function() {
   return gulp.src(['src/**/*.js', 'spec/**/*.js'])
     .pipe(jshint())
-    .pipe(jshint.reporter('jshint-stylish'));
+    .pipe(jshint.reporter('jshint-stylish'))
+    .pipe(jshint.reporter('fail'));
 });
 
 gulp.task('jscs', function() {
