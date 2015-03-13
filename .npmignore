@@ -1,0 +1,11 @@
+*.sublime-project
+.editorconfig
+.gitignore
+.jscsrc
+.jshintrc
+.npmignore
+.travis.yml
+lib/spec/
+node_modules/
+spec/
+src/
