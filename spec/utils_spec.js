@@ -67,6 +67,9 @@ describe("Azk utils module", function() {
       var b = new OtherBar('bname');
       var c = new OtherBar('cname');
 
+      console.log('\n>>---------\n b:', b, '\n>>---------\n');
+      console.log('\n>>---------\n b.prototype:', b.prototype, '\n>>---------\n');
+
       return Q.all([
         b.getAsyncName(), c.getAsyncName()
       ]).then((results) => {
