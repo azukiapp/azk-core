@@ -96,21 +96,20 @@ var Utils = {
       Klass = require(Klass);
     }
 
-    var NewKlass = Object.create(Object.getPrototypeOf(Klass));
-    NewKlass = function(...args) {
-      Object.getPrototypeOf(Klass).call(this, ...args);
+    var NewClass = function(...args) {
+      Klass.call(this, ...args);
     };
 
-    Object.setPrototypeOf(NewKlass, Object.create(Object.getPrototypeOf(Klass)));
+    NewClass.prototype = Object.create(Klass.prototype);
 
-    _.each(_.methods(Object.getPrototypeOf(Klass)), (method) => {
-      var original = Object.getPrototypeOf(Klass)[method];
-      Object.getPrototypeOf(Klass)[method] = function(...args) {
+    _.each(_.methods(Klass.prototype), (method) => {
+      var original = Klass.prototype[method];
+      NewClass.prototype[method] = function(...args) {
         return Q.nbind(original, this)(...args);
       };
     });
 
-    return NewKlass;
+    return NewClass;
   },
 
   qifyModule(mod) {
