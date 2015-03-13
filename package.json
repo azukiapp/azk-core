@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "gulp mocha",
-    "start": "gulp"
+    "start": "gulp",
+    "prepublish": "gulp mocha"
   },
   "repository": {
     "type": "git",
