@@ -117,9 +117,6 @@ var Utils = {
       klass.call(this, ...args);
     };
 
-    console.log('\n>>---------\n klass:', klass, '\n>>---------\n');
-    console.log('\n>>---------\n klass.__proto__:', klass.__proto__, '\n>>---------\n');
-    console.log('\n>>---------\n klass.prototype:', klass.prototype, '\n>>---------\n');
     newClass.prototype = Object.create(klass.prototype);
 
     _.each(_.functions(klass), (method) => {

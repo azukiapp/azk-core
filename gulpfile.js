@@ -1,6 +1,7 @@
 var babel      = require('gulp-babel');
 var gulp       = require('gulp');
-var gutil      = require('gulp-util');
+var jscs = require('gulp-jscs');
+var jshint = require('gulp-jshint');
 var mocha      = require('gulp-mocha');
 var rimraf     = require('rimraf');
 var sourcemaps = require('gulp-sourcemaps');
@@ -56,12 +57,30 @@ gulp.task('watch-spec', function() {
 */
 gulp.task('test', ['mocha', 'watch-spec']);
 
-gulp.task('mocha', ['babel'], function() {
+gulp.task('mocha', ['babel', 'jshint', 'jscs'], function() {
   return gulp.src('lib/spec/**/*.js', { read: false })
     .pipe( mocha( {
       reporter: 'spec', growl: 'true', grep: yargs.argv.grep, timeout: 4000
-    } ))
-    .on('error', gutil.log);
+    } ));
 });
 
+/*
+   lint: jshint + jscs
+*/
+gulp.task('jshint', function() {
+  return gulp.src(['src/**/*.js', 'spec/**/*.js'])
+    .pipe(jshint())
+    .pipe(jshint.reporter('jshint-stylish'));
+});
+
+gulp.task('jscs', function() {
+  return gulp.src(['src/**/*.js', 'spec/**/*.js'])
+    .pipe(jscs());
+});
+
+gulp.task('lint', ['jscs', 'jshint']);
+
+/*
+   default
+*/
 gulp.task('default', ['babel-src', 'watch-src']);

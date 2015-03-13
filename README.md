@@ -6,13 +6,19 @@
 $ npm start
 ```
 
-#### Test
+#### Test + lint
 
 ```
 $ npm test
 ```
 
-#### Test and watch
+#### Lint (jshint + jscs)
+
+```
+$ gulp lint
+```
+
+#### Test + lint and watch
 
 ```
 $ gulp test
