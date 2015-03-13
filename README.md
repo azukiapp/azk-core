@@ -1,4 +1,4 @@
-# azk-core-utils
+# azk-core
 
 #### Compile and watch
 

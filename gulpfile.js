@@ -10,6 +10,17 @@ require('babel/polyfill');
 require('source-map-support').install();
 
 /*
+   clean
+*/
+gulp.task('clean-lib-src', function (cb) {
+  rimraf('./lib/src', cb);
+});
+
+gulp.task('clean-lib-spec', function (cb) {
+  rimraf('./lib/spec', cb);
+});
+
+/*
    babel
 */
 gulp.task('babel-src', ['clean-lib-src'], function () {
@@ -31,33 +42,11 @@ gulp.task('babel-spec', ['clean-lib-spec'], function () {
 gulp.task('babel', ['babel-src', 'babel-spec']);
 
 /*
-   clean
-*/
-gulp.task('clean-lib-src', function (cb) {
-  rimraf('./lib/src', cb);
-});
-
-gulp.task('clean-lib-spec', function (cb) {
-  rimraf('./lib/spec', cb);
-});
-
-/*
-   watch
-*/
-gulp.task('watch-src', function() {
-  gulp.watch('src/**/*.js', ['babel-src']);
-});
-
-gulp.task('watch-spec', function() {
-  gulp.watch(['src/**/*.js', 'spec/**/*.js'], ['mocha']);
-});
-
-/*
    mocha
 */
 gulp.task('test', ['mocha', 'watch-spec']);
 
-gulp.task('mocha', ['babel', 'jshint', 'jscs'], function() {
+gulp.task('mocha', ['babel', 'lint'], function() {
   return gulp.src('lib/spec/**/*.js', { read: false })
     .pipe( mocha( {
       reporter: 'spec', growl: 'true', grep: yargs.argv.grep, timeout: 4000
@@ -74,6 +63,16 @@ gulp.task('jshint', function() {
     .pipe(jshint.reporter('fail'));
 });
 
+/*
+   watch
+*/
+gulp.task('watch-src', function() {
+  gulp.watch('src/**/*.js', ['babel-src']);
+});
+
+gulp.task('watch-spec', function() {
+  gulp.watch(['src/**/*.js', 'spec/**/*.js'], ['mocha']);
+});
 gulp.task('jscs', function() {
   return gulp.src(['src/**/*.js', 'spec/**/*.js'])
     .pipe(jscs());
@@ -84,4 +83,5 @@ gulp.task('lint', ['jscs', 'jshint']);
 /*
    default
 */
-gulp.task('default', ['babel-src', 'watch-src']);
+
+gulp.task('default', ['babel', 'lint', 'watch-src']);

@@ -1,5 +1,5 @@
 import h from './spec_helper';
-import { config } from '../src/azk-core-utils';
+import { config } from '../src/azk-core';
 import { get, set } from '../src/config';
 
 describe("azk config module", function() {

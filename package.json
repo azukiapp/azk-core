@@ -1,5 +1,5 @@
 {
-  "name": "azk-core-utils",
+  "name": "azk-core",
   "version": "0.0.1",
   "description": "azk core utils",
   "main": "index.js",
@@ -9,16 +9,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/azukiapp/azk-core-utils.git"
+    "url": "https://github.com/azukiapp/azk-core.git"
   },
   "keywords": [
     "azk"
   ],
   "license": "Apache License",
   "bugs": {
-    "url": "https://github.com/azukiapp/azk-core-utils/issues"
+    "url": "https://github.com/azukiapp/azk-core/issues"
   },
-  "homepage": "https://github.com/azukiapp/azk-core-utils",
+  "homepage": "https://github.com/azukiapp/azk-core",
   "dependencies": {
     "babel": "^4.7.9",
     "colors": "^1.0.3",
