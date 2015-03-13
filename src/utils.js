@@ -91,25 +91,26 @@ var Utils = {
     });
   },
 
-  qify(klass) {
-    if (_.isString(klass)) {
-      klass = require(klass);
+  qify(Klass) {
+    if (_.isString(Klass)) {
+      Klass = require(Klass);
     }
 
-    var newClass = function(...args) {
-      klass.call(this, ...args);
+    var NewKlass = Object.create(Object.getPrototypeOf(Klass));
+    NewKlass = function(...args) {
+      Object.getPrototypeOf(Klass).call(this, ...args);
     };
 
-    newClass.prototype = Object.create(klass.prototype);
+    Object.setPrototypeOf(NewKlass, Object.create(Object.getPrototypeOf(Klass)));
 
-    _.each(_.methods(klass.prototype), (method) => {
-      var original = klass.prototype[method];
-      newClass.prototype[method] = function(...args) {
+    _.each(_.methods(Object.getPrototypeOf(Klass)), (method) => {
+      var original = Object.getPrototypeOf(Klass)[method];
+      Object.getPrototypeOf(Klass)[method] = function(...args) {
         return Q.nbind(original, this)(...args);
       };
     });
 
-    return newClass;
+    return NewKlass;
   },
 
   qifyModule(mod) {
