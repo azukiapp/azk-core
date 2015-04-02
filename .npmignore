@@ -5,7 +5,10 @@
 .jshintrc
 .npmignore
 .travis.yml
-lib/spec/
-node_modules/
+gulpfile.js
+lib/spec/config_spec.js
+lib/spec/i18n_spec.js
+lib/spec/utils_spec.js
+node_modules
 spec/
 src/

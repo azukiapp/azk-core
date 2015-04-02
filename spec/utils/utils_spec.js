@@ -1,14 +1,15 @@
-import h from './spec_helper';
-import utils from '../src/utils';
-import { Q } from '../src/utils';
+import h from '../spec_helper';
+import Utils from '../../src/utils/utils';
+
+var Q = Utils.Q;
 
 var { join } = require('path');
 
-describe("Azk utils module", function() {
+describe("Azk Utils module", function() {
   it("should run function in cwd", function() {
     var current = process.cwd();
     var other = null;
-    utils.cd(__dirname, () => {
+    Utils.cd(__dirname, () => {
       other = process.cwd();
     });
     h.expect(current).to.not.equal(other);
@@ -17,25 +18,25 @@ describe("Azk utils module", function() {
   });
 
   it("should resolve a directory path", function() {
-    var result = utils.resolve('./', '../');
+    var result = Utils.resolve('./', '../');
     h.expect(result).to.equal(join(process.cwd(), '..'));
   });
 
   it("should resolve a file path", function() {
-    var result = utils.resolve('./', 'lib', 'spec', 'utils_spec.js');
-    h.expect(result).to.equal(join(process.cwd(), 'lib', 'spec', 'utils_spec.js'));
+    var result = Utils.resolve('./', 'lib', 'spec', 'utils', 'utils_spec.js');
+    h.expect(result).to.equal(join(process.cwd(), 'lib', 'spec', 'utils', 'utils_spec.js'));
   });
 
   it("should escape string with special regex characters", function() {
     var string = "-\\[]{}()*+?.,^$|#";
     var func = () => string.match(RegExp(string));
     h.expect(func).to.throw(SyntaxError);
-    h.expect(string).to.match(RegExp(utils.escapeRegExp(string)));
+    h.expect(string).to.match(RegExp(Utils.escapeRegExp(string)));
   });
 
   it("should expand templae", function() {
     var result, data = { value: "foo", hash: { key: "bar" } };
-    result = utils.template("<%= value %> - #{hash.key}", data);
+    result = Utils.template("<%= value %> - #{hash.key}", data);
     h.expect(result).to.equal("foo - bar");
   });
 
@@ -63,7 +64,7 @@ describe("Azk utils module", function() {
     });
 
     it("should qify a class methods", function() {
-      var OtherBar = utils.qify(FooBar);
+      var OtherBar = Utils.qify(FooBar);
 
       var b = new OtherBar('bname');
       var c = new OtherBar('cname');
@@ -86,7 +87,7 @@ describe("Azk utils module", function() {
       }
     };
 
-    var a = utils.qifyModule(mod);
+    var a = Utils.qifyModule(mod);
 
     it("should qify a methods", function() {
       return h.expect(a.getAsyncName('name')).to.eventually.equal('name');
@@ -102,8 +103,8 @@ describe("Azk utils module", function() {
   });
 
   describe("provides facilities to use Q", function() {
-    var defer = utils.defer;
-    var async = utils.async;
+    var defer = Utils.defer;
+    var async = Utils.async;
 
     var will_solve = () => {
       return defer((resolve, reject, notify) => {

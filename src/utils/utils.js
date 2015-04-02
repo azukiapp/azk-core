@@ -1,4 +1,4 @@
-import { i18n } from './i18n';
+import { i18n } from '../i18n';
 
 var { join, basename, dirname } = require('path');
 var crypto = require('crypto');
@@ -14,11 +14,24 @@ var Utils = {
   get i18n() {    return i18n; },
   get Q() {       return Q; },
   get _() {       return _; },
-  get net() {     return require('azk/utils/net').default; },
-  get docker() {  return require('azk/utils/docker').default; },
+  // get net() {     return require('azk/utils/net').default; },
+  // get docker() {  return require('azk/utils/docker').default; },
+  set net(net_utils_instance) {
+    this._net_utils_instance = net_utils_instance;
+  },
+  get net() {
+    return this._net_utils_instance;
+  },
 
   envs(key, defaultValue = null) {
-    return process.env[key] || (_.isFunction(defaultValue) ? defaultValue() : defaultValue);
+    var value = process.env[key];
+    if (value === 'undefined') { value = undefined; }
+    return value || (_.isFunction(defaultValue) ? defaultValue() : defaultValue);
+  },
+
+  envDefaultArray(key, defaultValue) {
+    var value = Utils.envs(key);
+    return (!value || _.isEmpty(value)) ? defaultValue : _.invoke(value.split(','), 'trim');
   },
 
   mergeConfig(options) {
@@ -173,6 +186,19 @@ var Utils = {
     return _.isNull(obj) ||
            _.isUndefined(obj) ||
            obj === false;
+  },
+
+  dlog (obj, title, depth) {
+    var node_utils = require('util');
+    var inspect_result = node_utils.inspect(obj, { showHidden:false, colors:true, depth:depth || null });
+    console.log('');
+    console.log('  >>-->>-------');
+    if (title) {
+      console.log('  ' + title);
+      console.log('  ---->>--->>--');
+    }
+    console.log(inspect_result);
+    console.log('  -------<<--<<');
   },
 
   get lazy_require() {

@@ -1,16 +1,36 @@
 import h from './spec_helper';
-import { config } from '../src/azk-core';
-import { get, set } from '../src/config';
+import { ConfigAzk } from '../../index';
 
 describe("azk config module", function() {
-  // Not change env in test
-  var env = config('env');
+
+  var configAzk, config, get, set, env;
+
+  beforeEach(function () {
+    // get ConfigAzk
+    configAzk = new ConfigAzk({
+      '*': {
+        newOption: 'ABC'
+      }
+    });
+
+    config = configAzk.getKey.bind(configAzk);
+    get    = configAzk.getKey.bind(configAzk);
+    set    = configAzk.setKey.bind(configAzk);
+
+    // Not change env in test
+    env = config('env');
+  });
+
   afterEach(() => set('env', env));
 
   describe("set call", function() {
     it("should set a env key", function() {
       set('env', 'production');
       h.expect(get('env')).to.equal('production');
+    });
+
+    it("should merge options", function() {
+      h.expect(get('newOption')).to.equal('ABC');
     });
 
     it("should defines an arbitrary key", function() {

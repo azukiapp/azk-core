@@ -1,5 +1,5 @@
 import h from './spec_helper';
-import { i18n } from '../src/utils';
+import { i18n } from '../src/utils/utils';
 
 describe("Azk i18n module", function() {
   var t = new i18n({ dict: {
