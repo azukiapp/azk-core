@@ -1,14 +1,8 @@
 var { Utils, path, Q } = require('../../index');
-var chai  = require('chai');
 var tmp = require('tmp');
 
-// Chai extensions
-chai.use(require('chai-as-promised'));
-chai.use(require('chai-things'));
-chai.config.includeStack = true;
-
 var Helpers = {
-  expect : chai.expect,
+  expect : require('azk-dev/chai').expect,
 
   fixture_path(...fixture) {
     var src_folder = path.resolve(__dirname);
