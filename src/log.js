@@ -37,9 +37,13 @@ export class Log {
     }, this);
 
     this._log.setConsoleLevel = (level) => {
-      this._log.remove(winston.transports.Console);
+      if (_.isEmpty(this._log.transports)) {
+        this._log.add(winston.transports.Console, console_opts);
+      } else {
+        this._log.remove(winston.transports.Console);
+        this._log.add(winston.transports.Console, console_opts);
+      }
       console_opts.level = level;
-      this._log.add(winston.transports.Console, console_opts);
     };
   }
 
