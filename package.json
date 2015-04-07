@@ -4,7 +4,7 @@
   "description": "azk core",
   "main": "index.js",
   "scripts": {
-    "test": "gulp mocha",
+    "test": "gulp test",
     "patch": "npm test && npm version patch && npm publish && git push"
   },
   "repository": {
