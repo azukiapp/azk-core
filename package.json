@@ -34,7 +34,7 @@
     "winston": "^0.9.0"
   },
   "devDependencies": {
-    "azk-dev": "0.0.2"
+    "azk-dev": "0.0.7"
   },
   "engineStrict": true,
   "engines": {
