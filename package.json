@@ -1,6 +1,6 @@
 {
   "name": "azk-core",
-  "version": "0.1.25",
+  "version": "0.1.26",
   "description": "azk core",
   "main": "index.js",
   "scripts": {
@@ -22,7 +22,6 @@
   "dependencies": {
     "babel": "^4.7.9",
     "colors": "^1.0.3",
-    "crypto": "0.0.3",
     "fs-extra": "^0.18.0",
     "lodash": "^3.5.0",
     "netmask": "^1.0.5",
