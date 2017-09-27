@@ -1,4 +1,4 @@
-import { i18n } from '../i18n';
+import { I18n } from 'i18n-cli';
 
 var { join, basename, dirname } = require('path');
 var crypto = require('crypto');
@@ -11,7 +11,7 @@ var Utils = {
   __esModule: true,
 
   get default() { return Utils; },
-  get i18n() {    return i18n; },
+  get i18n() {    return I18n; },
   get Q() {       return Q; },
   get _() {       return _; },
   // get net() {     return require('azk/utils/net').default; },
@@ -57,7 +57,7 @@ var Utils = {
     path = join(...path);
 
     // Remove file from path
-    var file = "";
+    var file = '';
     var stat = fs.statSync(path);
     if (stat.isFile()) {
       file = basename(path);
@@ -83,59 +83,11 @@ var Utils = {
 
         if (Q.isPromise(result)) {
           result.progress(notify).then(resolve, reject);
-        } else if (typeof(result) != "undefined") {
+        } else if (typeof(result) != 'undefined') {
           resolve(result);
         }
       });
     });
-  },
-
-  async(obj, func, ...args) {
-    return Utils.defer((_resolve, _reject, notify) => {
-      if (typeof obj == "function") {
-        [func, obj] = [obj, null];
-      }
-
-      if (typeof obj == "object") {
-        func = func.bind(obj);
-      }
-
-      return Q.async(func).apply(func, [...args].concat(notify));
-    });
-  },
-
-  qify(Klass) {
-    if (_.isString(Klass)) {
-      Klass = require(Klass);
-    }
-
-    var NewClass = function(...args) {
-      Klass.call(this, ...args);
-    };
-
-    NewClass.prototype = Object.create(Klass.prototype);
-
-    _.each(_.methods(Klass.prototype), (method) => {
-      var original = Klass.prototype[method];
-      NewClass.prototype[method] = function(...args) {
-        return Q.nbind(original, this)(...args);
-      };
-    });
-
-    return NewClass;
-  },
-
-  qifyModule(mod) {
-    var newMod = _.clone(mod);
-
-    _.each(_.methods(mod), (method) => {
-      var original = mod[method];
-      newMod[method] = function(...args) {
-        return Q.nbind(original, this)(...args);
-      };
-    });
-
-    return newMod;
   },
 
   unzip(origin, target) {
@@ -144,7 +96,7 @@ var Utils = {
         var input  = fs.createReadStream(origin);
         var output = fs.createWriteStream(target);
 
-        output.on("close", () => done.resolve());
+        output.on('close', () => done.resolve());
         input.pipe(zlib.createGunzip()).pipe(output);
       } catch (err) {
         done.reject(err);
@@ -173,7 +125,7 @@ var Utils = {
   },
 
   escapeRegExp(value) {
-    return (value || "").replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, "\\$&");
+    return (value || '').replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&');
   },
 
   template(template_string, data) {

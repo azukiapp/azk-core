@@ -1,0 +1,50 @@
+---
+  env:
+    es6: true
+    node: true
+    jest: true
+  extends: "eslint:recommended"
+  parser: "babel-eslint"
+  parserOptions:
+    ecmaFeatures:
+      experimentalObjectRestSpread: true
+      jsx: true
+    sourceType: "module"
+  plugins:
+    - "mocha"
+  rules:
+    no-console:
+      - error
+      - allow:
+        - "error"
+        - "warn"
+    no-unused-vars:
+      - 1
+      - vars: all
+        args: after-used
+        ignoreRestSiblings: true
+        argsIgnorePattern: "^_"
+    indent:
+      - "error"
+      - 2
+      - SwitchCase: 1
+    linebreak-style:
+      - "error"
+      - "unix"
+    quotes:
+      - "error"
+      - "single"
+    semi:
+      - "error"
+      - "always"
+    sort-imports:
+      - "error"
+      - ignoreCase: false
+        ignoreMemberSort: false
+        memberSyntaxSortOrder:
+          - "none"
+          - "all"
+          - "multiple"
+          - "single"
+    mocha/no-exclusive-tests:
+      - error

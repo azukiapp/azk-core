@@ -54,42 +54,16 @@
 - **Utils**
   - Utils class
 
-## npm dependencies
-
-- [babel](https://github.com/babel/babel)
-- [colors](https://github.com/Marak/colors.js)
-- [crypto](https://github.com/Gozala/crypto)
-- [lodash](https://github.com/lodash/lodash)
-- [printf](https://github.com/wdavidw/node-printf)
-- [q](https://www.npmjs.com/package/q)
-- [source-map-support](https://github.com/evanw/node-source-map-support)
-
 #### before start
 
 ```
-$ npm install
+$ yarn install
 ```
 
-#### test + lint (no watch)
+## License
 
-```
-$ gulp
-```
+"Azuki", "azk" and the Azuki logo are copyright (c) 2013-2017 Azuki Serviços de Internet LTDA.
 
-#### test + lint + watch
+**azk** source code is released under Apache 2 License.
 
-```
-$ gulp test
-```
-
-#### test + watch (no-lint)
-
-```
-$ gulp test-no-lint
-```
-
-#### publish a patch to npm
-
-```
-$ npm run-script patch
-```
+Check LEGAL and LICENSE files for more information.

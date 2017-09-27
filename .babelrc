@@ -1,0 +1,10 @@
+{
+  "passPerPreset": true,
+  "presets": [
+    ["env", {
+      "targets": {
+        "node": 7
+      }
+    }]
+  ]
+}

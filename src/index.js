@@ -1,15 +1,14 @@
-var azk_core         = require('./lib/src/azk-core');
-var Utils            = require('./lib/src/utils/utils');
-var NetUtils         = require('./lib/src/utils/net').NetUtils;
-var config_module    = require('./lib/src/config');
-var Log              = require('./lib/src/log').Log;
+import * as Utils    from './utils/utils';
+import * as azk_core from './azk-core';
+import * as config_module from './config';
+import { Log }       from './log';
+import { NetUtils }  from './utils/net';
 
 module.exports = {
   __esModule: true,
 
   get Q                () { return azk_core.Q; },
   get _                () { return azk_core._; },
-  get async            () { return azk_core.async; },
   get fs               () { return azk_core.fs; },
   get os               () { return azk_core.os; },
   get path             () { return azk_core.path; },

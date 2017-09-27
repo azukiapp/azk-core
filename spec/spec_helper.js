@@ -1,21 +1,27 @@
-var { Utils, path, Q } = require('../../index');
-var tmp = require('tmp');
+import * as tmp from 'tmp';
+import { Q, Utils } from '../src';
+import chai from 'chai';
+import { resolve } from 'path';
+
+require('source-map-support').install();
+
+// Chai extensions
+chai.use(require('chai-as-promised'));
+chai.config.includeStack = true;
 
 var Helpers = {
-  expect : require('azk-dev/chai').expect,
+  expect : chai.expect,
 
   fixture_path(...fixture) {
-    var src_folder = path.resolve(__dirname);
-    var fixtures_path = Utils.resolve(src_folder, '..', '..', 'spec', 'fixtures', ...fixture);
-    return fixtures_path;
+    return resolve(__dirname, 'fixtures', ...fixture);
   },
 
-  tmp_dir(opts = { prefix: "azk-test-"}) {
+  tmp_dir(opts = { prefix: 'azk-test-'}) {
     return Q.nfcall(tmp.dir, opts).then((dir) => {
       return Utils.resolve(dir[0]);
     });
   },
-
 };
 
 export default Helpers;
+export { chai };

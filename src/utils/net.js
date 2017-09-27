@@ -1,12 +1,12 @@
-import { Q, _, async, defer, fs, envDefaultArray, isBlank } from './utils';
+import { _, async, defer, envDefaultArray, fs, isBlank } from './utils';
+import { checkPortStatus } from 'portscanner';
 
-var portscanner = require('portscanner');
 var url         = require('url');
 var nativeNet   = require('net');
 var os          = require('os');
 var { isIPv4 }  = require('net');
 var Netmask     = require('netmask').Netmask;
-var cache_key   = "agent:dns:file_cache";
+var cache_key   = 'agent:dns:file_cache';
 
 export class NetUtils {
   constructor(configGetKey, configSetKey) {
@@ -15,7 +15,7 @@ export class NetUtils {
   }
 
   getPort(host = 'localhost') {
-    var portrange = this._getConfig("agent:portrange_start");
+    var portrange = this._getConfig('agent:portrange_start');
     var port   = portrange;
     portrange += 1;
 
@@ -27,18 +27,15 @@ export class NetUtils {
   }
 
   checkPort(port, host = 'localhost') {
-    return Q.ninvoke(portscanner, "checkPortStatus", port, host)
-      .then((status) => {
-        return status == 'closed';
-      });
+    return checkPortStatus(port, host);
   }
 
   calculateNetIp(ip) {
-    return ip.replace(/^(.*)\..*$/, "$1.0/24");
+    return ip.replace(/^(.*)\..*$/, '$1.0/24');
   }
 
   calculateGatewayIp(ip) {
-    return ip.replace(/^(.*)\..*$/, "$1.1");
+    return ip.replace(/^(.*)\..*$/, '$1.1');
   }
 
   nameServers(custom_dns_servers, options={}) {
@@ -68,8 +65,8 @@ export class NetUtils {
       dns_servers = nameservers;
     }
 
-    if (!_.contains(dns_servers, this._getConfig("agent:dns:ip"))) {
-      dns_servers.unshift(this._getConfig("agent:dns:ip"));
+    if (!_.contains(dns_servers, this._getConfig('agent:dns:ip'))) {
+      dns_servers.unshift(this._getConfig('agent:dns:ip'));
     }
 
     if (!custom_dns_servers) {
@@ -83,7 +80,7 @@ export class NetUtils {
     return _.filter(nameservers, (server) => { return !server.match(/^127\./); });
   }
 
-  _readResolverFile(file = "/etc/resolv.conf") {
+  _readResolverFile(file = '/etc/resolv.conf') {
     var data = null;
     if (file) {
       try {
@@ -103,7 +100,7 @@ export class NetUtils {
     return _.reduce(lines, (acc, line) => {
       if ((capture = line.match(regex))) {
         var ip   = capture[1];
-        var port = capture[2] || "53";
+        var port = capture[2] || '53';
         if (isIPv4(ip)) {
           acc.push({ ip, port });
         }
@@ -118,13 +115,13 @@ export class NetUtils {
       var ranges = _.range(50, 255).concat(_.range(10, 50 ), _.range(0 , 10 ));
       this._suggestion_ips = _.map(ranges, (i) => `192.168.${i}.4`);
     }
-    info("configure.find_suggestions_ips");
+    info('configure.find_suggestions_ips');
     return _.find(this._suggestion_ips, (new_ip) => {
       if (new_ip != ip) {
         var conflict = this.conflictInterface(new_ip, interfaces);
         if (_.isEmpty(conflict)) { return true; }
         var info_data = { ip: new_ip, inter_name: conflict.name, inter_ip: conflict.ip };
-        info("configure.errors.ip_conflict", info_data);
+        info('configure.errors.ip_conflict', info_data);
       }
     });
   }
@@ -166,7 +163,7 @@ export class NetUtils {
   waitService(uri, retry = 15, opts = {}) {
     opts = _.defaults(opts, {
       timeout: 10000,
-      retry_if: () => { return Q(true); }
+      retry_if: () => { return Promise.resolve(true); }
     });
 
     // Parse options to try connect

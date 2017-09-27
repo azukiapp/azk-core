@@ -1,4 +1,4 @@
-import { _, envs, mergeConfig, i18n } from './utils/utils';
+import { _, envs, i18n, mergeConfig } from './utils/utils';
 var path = require('path');
 var src_folder = path.resolve(__dirname);
 
@@ -12,13 +12,13 @@ export class ConfigAzk {
     this._options = {
       '*': {
         paths: {
-          //                    /azk-core/lib/src/../../shared/locales
-          locales: path.resolve(src_folder, '..', '..', 'shared', 'locales')
+          // /azk-core/lib/../shared/locales
+          locales: path.resolve(src_folder, '..', 'shared', 'locales')
         },
         agent: {
           portrange_start: 12000,
           dns: {
-            ip  : new Dynamic("agent:balancer:ip"),
+            ip  : new Dynamic('agent:balancer:ip'),
             port: envs('AZK_DNS_PORT', '53'),
             global: [],
             nameservers  : [],
@@ -36,7 +36,7 @@ export class ConfigAzk {
   }
 
   getKey(key) {
-    if (key == "env") {
+    if (key == 'env') {
       return envs('NODE_ENV', 'production');
     }
 
@@ -58,7 +58,7 @@ export class ConfigAzk {
   }
 
   setKey(key, value) {
-    if (key == "env") {
+    if (key == 'env') {
       process.env.NODE_ENV = value;
     } else {
       var keys   = [envs('NODE_ENV', 'production'), ...key.split(':')];
