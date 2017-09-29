@@ -1,4 +1,5 @@
 import * as AzkCore from '../src';
+import { Config } from '../src';
 import h from './spec_helper';
 
 describe('AzkCore interface', function() {
@@ -20,35 +21,6 @@ describe('AzkCore interface', function() {
     });
   });
 
-  describe('ConfigAzk:', function() {
-    var ConfigAzk = null;
-    var configAzk = null;
-
-    beforeEach(function() {
-      ConfigAzk = AzkCore.ConfigAzk;
-      configAzk = new ConfigAzk();
-    });
-
-    it('should have config', function() {
-      h.expect(AzkCore.ConfigAzk).to.not.be.undefined;
-    });
-
-    it('should can configure ConfigAzk', function() {
-      h.expect(configAzk).to.not.be.undefined;
-
-      var paths_locales = configAzk.getKey('paths:locales');
-      h.expect(paths_locales).to.match(/.*azk-core\/shared\/locales/);
-    });
-
-    it('should can receive parameters', function() {
-      h.expect(configAzk).to.not.be.undefined;
-
-      configAzk.setKey('paths:locales', 'ONONON');
-      var paths_locales = configAzk.getKey('paths:locales');
-      h.expect(paths_locales).to.eql('ONONON');
-    });
-  });
-
   describe('Log:', function() {
     var Log = AzkCore.Log;
 
@@ -57,14 +29,7 @@ describe('AzkCore interface', function() {
     });
 
     it('should configure Log', function() {
-      // config
-      var ConfigAzk = AzkCore.ConfigAzk;
-      var configAzk = new ConfigAzk();
-      var getKey = configAzk.getKey.bind(configAzk);
-      var t = configAzk.t.bind(configAzk);
-
-      // log
-      var log = new Log(getKey, t);
+      var log = new Log(new Config());
 
       log._log.setConsoleLevel('debug');
       log._log.debug('debug must be visible');

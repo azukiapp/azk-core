@@ -23,26 +23,6 @@ var Utils = {
     return this._net_utils_instance;
   },
 
-  envs(key, defaultValue = null) {
-    var value = process.env[key];
-    if (value === 'undefined') { value = undefined; }
-    return value || (_.isFunction(defaultValue) ? defaultValue() : defaultValue);
-  },
-
-  envDefaultArray(key, defaultValue) {
-    var value = Utils.envs(key);
-    return (!value || _.isEmpty(value)) ? defaultValue : _.invoke(value.split(','), 'trim');
-  },
-
-  mergeConfig(options) {
-    _.each(options, (values, key) => {
-      if (key != '*') {
-        options[key] = _.merge({}, options['*'], values);
-      }
-    });
-    return options;
-  },
-
   cd(target, func) {
     var result, old = process.cwd();
 
@@ -66,27 +46,6 @@ var Utils = {
 
     return Utils.cd(path, function() {
       return join(process.cwd(), file);
-    });
-  },
-
-  defer(func) {
-    return Q.Promise((resolve, reject, notify) => {
-      setImmediate(() => {
-        var result;
-
-        try {
-          resolve = _.extend(resolve, { resolve: resolve, reject: reject, notify: notify });
-          result = func(resolve, reject, notify);
-        } catch (e) {
-          return reject(e);
-        }
-
-        if (Q.isPromise(result)) {
-          result.progress(notify).then(resolve, reject);
-        } else if (typeof(result) != 'undefined') {
-          resolve(result);
-        }
-      });
     });
   },
 

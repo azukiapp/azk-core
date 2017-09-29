@@ -1,4 +1,4 @@
-import { Q, _, defer, async, isBlank, lazy_require } from './utils/utils';
+import { Q, _, isBlank, lazy_require } from './utils/utils';
 
 Q.longStackSupport = true;
 
@@ -10,10 +10,6 @@ module.exports = {
   get Q() {  return Q; },
   get _() {  return _; },
   get lazy_require() {  return lazy_require; },
-
-  // Promise helpers
-  get defer() { return defer; },
-  get async() { return async; },
 
   // Internals alias
   get os() {      return require('os'); },

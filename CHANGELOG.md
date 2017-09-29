@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 * Enhancements
   * [Code] Replacing azk-dev for pure Babel tools, mocha and eslint;
+  * [Config] Refactoring Config class;
 
 ## 0.1.24
 

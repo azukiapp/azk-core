@@ -1,47 +1,43 @@
-import { _, envs, i18n, mergeConfig } from './utils/utils';
-var path = require('path');
-var src_folder = path.resolve(__dirname);
+import _ from 'lodash';
+
+const EnvVarName = 'NODE_ENV';
+const DefaultEnv = 'production';
 
 export class Dynamic {
   constructor(key) { this.key = key; }
 }
 
-export class ConfigAzk {
-  constructor(options_given) {
-    this._t = null;
-    this._options = {
-      '*': {
-        paths: {
-          // /azk-core/lib/../shared/locales
-          locales: path.resolve(src_folder, '..', 'shared', 'locales')
-        },
-        agent: {
-          portrange_start: 12000,
-          dns: {
-            ip  : new Dynamic('agent:balancer:ip'),
-            port: envs('AZK_DNS_PORT', '53'),
-            global: [],
-            nameservers  : [],
-            defaultserver: ['8.8.8.8', '8.8.4.4'],
-          },
-        }
-      },
-    };
-
-    if (options_given) {
-      _.merge(this._options, options_given);
-    }
-
-    mergeConfig(this._options);
+export class Config {
+  constructor(options = {'*': {}}) {
+    this._options = this._mergeConfig(options);
   }
 
-  getKey(key) {
+  static dynamic(key) {
+    return new Dynamic(key);
+  }
+
+  static getEnv(key, defaultValue = null, envs = process.env) {
+    if (_.isUndefined(envs[key])) {
+      return (_.isFunction(defaultValue) ? defaultValue() : defaultValue);
+    }
+
+    return this._parse(envs[key]);
+  }
+
+  static getEnvArray(key, defaultValue = undefined, envs = process.env) {
+    const value = this.getEnv(key, defaultValue, envs);
+    return (!value || _.isEmpty(value))
+      ? defaultValue
+      : _.map(value.split(','), v => this._parse(v.trim()));
+  }
+
+  get(key) {
     if (key == 'env') {
-      return envs('NODE_ENV', 'production');
+      return this.constructor.getEnv(EnvVarName, DefaultEnv);
     }
 
     var keys   = key.split(':');
-    var buffer = this._options[envs('NODE_ENV', 'production')] || this._options['*'];
+    var buffer = this._options[this.constructor.getEnv(EnvVarName, DefaultEnv)] || this._options['*'];
 
     for (var i = 0; i < keys.length; i++) {
       buffer = buffer[keys[i]];
@@ -57,11 +53,11 @@ export class ConfigAzk {
     return _.clone(buffer);
   }
 
-  setKey(key, value) {
+  set(key, value) {
     if (key == 'env') {
-      process.env.NODE_ENV = value;
+      process.env[EnvVarName] = value;
     } else {
-      var keys   = [envs('NODE_ENV', 'production'), ...key.split(':')];
+      var keys   = [this.constructor.getEnv(EnvVarName, DefaultEnv), ...key.split(':')];
       var buffer = {};
       buffer[keys.pop()] = value;
 
@@ -72,8 +68,8 @@ export class ConfigAzk {
       }
 
       // Check env exist
-      if (!this._options[envs('NODE_ENV', 'production')]) {
-        this._options[envs('NODE_ENV', 'production')] = _.cloneDeep(this._options['*']);
+      if (!this._options[this.constructor.getEnv(EnvVarName, DefaultEnv)]) {
+        this._options[this.constructor.getEnv(EnvVarName, DefaultEnv)] = _.cloneDeep(this._options['*']);
       }
 
       _.merge(this._options, buffer);
@@ -81,14 +77,27 @@ export class ConfigAzk {
     return value;
   }
 
-  get t() {
-    if (!this._t) {
-      this._t = new i18n({
-        path: path.join(this.getKey('paths:locales')),
-        locale: this.getKey('locale'),
-      }).t;
+  static _parse(value) {
+    switch (value) {
+      case 'undefined':
+        return undefined;
+      case 'null':
+        return null;
+      case 'false':
+        return false;
+      case 'true':
+        return true;
+      default:
+        return value;
     }
-    return this._t;
   }
 
+  _mergeConfig(options) {
+    return _.mapValues(options, (values, key) => {
+      if (key != '*') {
+        return _.merge({}, options['*'], values);
+      }
+      return values;
+    });
+  }
 }
